@@ -1,0 +1,11 @@
+runtime: python310
+entrypoint: gunicorn -b :$PORT main:app
+
+# Environment variables (Sensitive keys usually go in Secret Manager, 
+# but for a basic assignment, you can put non-critical ones here 
+# OR load them from a .env file locally. 
+# DO NOT upload real passwords to GitHub public repos!)
+env_variables:
+  # You will replace these with your actual connection strings later
+  MONGO_URI: "mongodb+srv://<user>:<pass>@cluster0.mongodb.net/?retryWrites=true&w=majority"
+  NEON_DB_URL: "postgres://<user>:<pass>@ep-cool-project.aws.neon.tech/neondb?sslmode=require"
