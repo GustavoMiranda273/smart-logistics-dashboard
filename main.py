@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template  # Added render_template
 from pymongo import MongoClient
 import psycopg2
 
@@ -8,7 +8,7 @@ app = Flask(__name__)
 # --- CONFIGURATION ---
 # In production (GAE), these come from app.yaml env_variables.
 # Locally, make sure you set them or use a .env file.
-MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://admin:<db_password>@cluster0.2xqktob.mongodb.net/?appName=Cluster0')
+MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://admin:0TQJPY1aZXO0BspG@cluster0.2xqktob.mongodb.net/?appName=Cluster0')
 NEON_URL = os.environ.get('NEON_DB_URL','postgresql://neondb_owner:npg_UgH9VXp7Sjch@ep-spring-union-abb1gtsa-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require')
 
 # --- DATABASE CONNECTIONS ---
@@ -30,8 +30,8 @@ def get_sql_connection():
 
 @app.route('/')
 def index():
-    """Landing page to prove the app is running."""
-    return "<h1>Smart Logistics Dashboard</h1><p>System Status: Online</p>"
+    # In the future, we will fetch real data from Neon/Mongo here
+    return render_template('dashboard.html')
 
 @app.route('/test-db')
 def test_databases():
