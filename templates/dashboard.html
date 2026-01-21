@@ -7,64 +7,71 @@
         <p class="text-muted">Real-time tracking of fleet and deliveries.</p>
     </div>
     <div class="col-md-4 text-end">
-        <button class="btn btn-success"><i class="fa-solid fa-plus"></i> New Delivery</button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDeliveryModal">
+            <i class="fa-solid fa-plus"></i> New Delivery
+        </button>
     </div>
 </div>
 
-<div class="row mb-4">
-    <div class="col-md-4">
-        <div class="card text-white bg-primary mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Active Trucks</h5>
-                <h2 class="display-4">3</h2>
-            </div>
-        </div>
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Active Deliveries</h5>
     </div>
-    <div class="col-md-4">
-        <div class="card text-white bg-warning mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Pending Deliveries</h5>
-                <h2 class="display-4">12</h2>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card text-white bg-success mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Completed Today</h5>
-                <h2 class="display-4">8</h2>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header">Recent Delivery Logs</div>
     <div class="card-body">
-        <table class="table table-striped">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Driver</th>
-                    <th>Status</th>
                     <th>Destination</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
+                {% for d in deliveries %}
                 <tr>
-                    <td>#1001</td>
-                    <td>Alice Smith</td>
-                    <td><span class="badge bg-warning">In Transit</span></td>
-                    <td>Bournemouth University</td>
+                    <td>#{{ d[0] }}</td>
+                    <td>{{ d[1] }}</td>
+                    <td>{{ d[2] }}</td>
+                    <td>
+                        <span class="badge bg-primary">{{ d[3] }}</span>
+                    </td>
                 </tr>
+                {% else %}
                 <tr>
-                    <td>#1002</td>
-                    <td>Bob Jones</td>
-                    <td><span class="badge bg-success">Delivered</span></td>
-                    <td>Poole Harbour</td>
+                    <td colspan="4" class="text-center text-muted">No deliveries found. Create one!</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+<div class="modal fade" id="addDeliveryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Delivery</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/create-delivery" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Driver Name</label>
+                        <input type="text" name="driver" class="form-control" required placeholder="e.g. Alice Smith">
+                    </div>
+                    <div class="mb-3">
+                        <label>Destination</label>
+                        <input type="text" name="destination" class="form-control" required placeholder="e.g. Bournemouth University">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Create & Log</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
