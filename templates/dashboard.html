@@ -18,7 +18,7 @@
         <div class="card text-white bg-primary mb-3">
             <div class="card-body">
                 <h5 class="card-title">Active Trucks</h5>
-                <h2>{{ counts['total'] }}</h2>
+                <h2 class="display-4">{{ counts['total'] if counts else '0' }}</h2>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="card text-white bg-warning mb-3">
             <div class="card-body">
                 <h5 class="card-title">Pending Deliveries</h5>
-                <h2>{{ counts['transit'] }}</h2>
+                <h2 class="display-4">{{ counts['transit'] if counts else '0' }}</h2>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
         <div class="card text-white bg-success mb-3">
             <div class="card-body">
                 <h5 class="card-title">Completed Today</h5>
-                <h2>{{ counts['delivered'] }}</h2>
+                <h2 class="display-4">{{ counts['delivered'] if counts else '0' }}</h2>
             </div>
         </div>
     </div>
@@ -62,11 +62,19 @@
                     <td>{{ d[1] }}</td>
                     <td>{{ d[2] }}</td>
                     <td>
-                        <span class="badge bg-primary">{{ d[3] }}</span>
+                        <span class="badge {% if d[3] == 'Delivered' %}bg-success{% else %}bg-primary{% endif %}">
+                            {{ d[3] }}
+                        </span>
                     </td>
                     <td>
+                        <form action="/complete/{{ d[0] }}" method="POST" style="display:inline;">
+                             <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Delivered">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                        </form>
+                        
                         <form action="/delete/{{ d[0] }}" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Delivery">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>

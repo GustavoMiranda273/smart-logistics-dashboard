@@ -158,5 +158,19 @@ def delete_delivery(id):
     
     return redirect(url_for('index'))
 
+@app.route('/complete/<int:id>', methods=['POST'])
+def complete_delivery(id):
+    try:
+        conn = get_sql_connection()
+        cur = conn.cursor()
+        cur.execute("UPDATE deliveries SET status = 'Delivered' WHERE id = %s", (id,))
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"Update Error: {e}")
+    
+    return redirect(url_for('index'))
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
