@@ -13,6 +13,33 @@
     </div>
 </div>
 
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Active Trucks</h5>
+                <h2 class="display-4">3</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Pending Deliveries</h5>
+                <h2 class="display-4">12</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Completed Today</h5>
+                <h2 class="display-4">8</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <h5 class="mb-0">Active Deliveries</h5>
@@ -25,6 +52,7 @@
                     <th>Driver</th>
                     <th>Destination</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,10 +64,17 @@
                     <td>
                         <span class="badge bg-primary">{{ d[3] }}</span>
                     </td>
+                    <td>
+                        <form action="/delete/{{ d[0] }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Delivery">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="4" class="text-center text-muted">No deliveries found. Create one!</td>
+                    <td colspan="5" class="text-center text-muted">No deliveries found. Create one!</td>
                 </tr>
                 {% endfor %}
             </tbody>

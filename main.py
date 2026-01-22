@@ -1,6 +1,6 @@
 import os
 import datetime
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pymongo import MongoClient
 import psycopg2
 
@@ -98,6 +98,49 @@ def create_delivery():
     }
     mongo_db.logs.insert_one(log_entry)
 
+    return redirect(url_for('index'))
+
+@app.route('/api/deliveries')
+def api_get_deliveries():
+    """
+    REST API Endpoint: Returns delivery data as JSON.
+    External systems can use this to get our data.
+    """
+    try:
+        conn = get_sql_connection()
+        cur = conn.cursor()
+        # Fetch data as a dictionary so it looks nice in JSON
+        cur.execute("SELECT id, driver_name, destination, status FROM deliveries")
+        rows = cur.fetchall()
+        
+        # Convert to a list of dictionaries
+        data = []
+        for row in rows:
+            data.append({
+                "id": row[0],
+                "driver": row[1],
+                "destination": row[2],
+                "status": row[3]
+            })
+            
+        cur.close()
+        conn.close()
+        return jsonify(data), 200 # Return JSON with HTTP 200 OK
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/delete/<int:id>', methods=['POST'])
+def delete_delivery(id):
+    try:
+        conn = get_sql_connection()
+        cur = conn.cursor()
+        cur.execute("DELETE FROM deliveries WHERE id = %s", (id,))
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"Delete Error: {e}")
+    
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
