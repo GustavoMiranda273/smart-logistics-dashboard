@@ -18,7 +18,7 @@
         <div class="card text-white bg-primary mb-3">
             <div class="card-body">
                 <h5 class="card-title">Active Trucks</h5>
-                <h2 class="display-4">3</h2>
+                <h2>{{ counts['total'] }}</h2>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="card text-white bg-warning mb-3">
             <div class="card-body">
                 <h5 class="card-title">Pending Deliveries</h5>
-                <h2 class="display-4">12</h2>
+                <h2>{{ counts['transit'] }}</h2>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
         <div class="card text-white bg-success mb-3">
             <div class="card-body">
                 <h5 class="card-title">Completed Today</h5>
-                <h2 class="display-4">8</h2>
+                <h2>{{ counts['delivered'] }}</h2>
             </div>
         </div>
     </div>

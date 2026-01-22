@@ -51,19 +51,34 @@ except Exception as e:
 
 @app.route('/')
 def index():
-    # Fetch data from SQL to show on dashboard
     deliveries = []
+    counts = {"total": 0, "transit": 0, "delivered": 0}
+    
     try:
         conn = get_sql_connection()
         cur = conn.cursor()
+        
+        # 1. Get all data
         cur.execute("SELECT * FROM deliveries ORDER BY id DESC")
         deliveries = cur.fetchall()
+        
+        # 2. Get Statistics
+        cur.execute("SELECT COUNT(*) FROM deliveries")
+        counts["total"] = cur.fetchone()[0]
+        
+        cur.execute("SELECT COUNT(*) FROM deliveries WHERE status='In Transit'")
+        counts["transit"] = cur.fetchone()[0]
+        
+        cur.execute("SELECT COUNT(*) FROM deliveries WHERE status='Delivered'")
+        counts["delivered"] = cur.fetchone()[0]
+        
         cur.close()
         conn.close()
     except Exception as e:
         print(f"Fetch Error: {e}")
 
-    return render_template('dashboard.html', deliveries=deliveries)
+    # Pass 'counts' to the HTML
+    return render_template('dashboard.html', deliveries=deliveries, counts=counts)
 
 @app.route('/login')
 def login():
