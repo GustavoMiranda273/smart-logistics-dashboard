@@ -65,6 +65,10 @@ def index():
 
     return render_template('dashboard.html', deliveries=deliveries)
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 @app.route('/create-delivery', methods=['POST'])
 def create_delivery():
     # 1. Get data from the HTML form

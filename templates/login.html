@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Logistics | Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f2f5; display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .login-card { width: 100%; max-width: 400px; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); background: white; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h3 class="text-center mb-4">Logistics Login</h3>
+    <div id="error-msg" class="alert alert-danger d-none"></div>
+    
+    <div class="mb-3">
+        <label>Email Address</label>
+        <input type="email" id="email" class="form-control" placeholder="admin@logistics.com">
+    </div>
+    <div class="mb-3">
+        <label>Password</label>
+        <input type="password" id="password" class="form-control" placeholder="••••••">
+    </div>
+    <button id="login-btn" class="btn btn-primary w-100">Sign In</button>
+</div>
+
+<script type="module">
+    // 1. Import the functions we need from Google's servers
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    // 2. PASTE YOUR CONFIG HERE (From your screenshot)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDZ_LigLkZ7npnZaUoDoR4bFbxu4xkevYE",
+        authDomain: "smart-logistics-auth.firebaseapp.com",
+        projectId: "smart-logistics-auth",
+        storageBucket: "smart-logistics-auth.firebasestorage.app",
+        messagingSenderId: "1035094994132",
+        appId: "1:1035094994132:web:a211170cb248ed00be5f41"
+    };
+
+    // 3. Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // 4. Handle Login Button Click
+    document.getElementById('login-btn').addEventListener('click', () => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+
+        signInWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                // Success! Redirect to dashboard
+                console.log("Logged in as:", userCredential.user.email);
+                window.location.href = "/"; 
+            })
+            .catch((error) => {
+                // Fail! Show error message
+                const msg = document.getElementById('error-msg');
+                msg.textContent = "Invalid Login: " + error.message;
+                msg.classList.remove('d-none');
+            });
+    });
+</script>
+
+</body>
+</html>
