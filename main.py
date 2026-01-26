@@ -88,6 +88,11 @@ def index():
 
     return render_template('dashboard.html', deliveries=deliveries, counts=counts)
 
+@app.route('/about')
+def about():
+    """Renders the About Us page."""
+    return render_template('about.html')
+
 @app.route('/create-delivery', methods=['POST'])
 def create_delivery():
     """
