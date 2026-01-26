@@ -1,10 +1,11 @@
 import os
 import datetime
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from pymongo import MongoClient
 import psycopg2
 
 app = Flask(__name__)
+app.secret_key = "super_secret_key_for_logistics"
 
 # --- PASTE YOUR CONNECTIONS HERE ---
 # Replace with your REAL strings again!
@@ -112,6 +113,8 @@ def create_delivery():
     except Exception as e:
         print(f"Create Error: {e}")
 
+    flash("New delivery created successfully!", "success")    
+
     return redirect(url_for('index'))
 
 @app.route('/delete/<int:id>', methods=['POST'])
@@ -126,6 +129,8 @@ def delete_delivery(id):
     except Exception as e:
         print(f"Delete Error: {e}")
     
+    flash("Delivery deleted.", "danger")
+
     return redirect(url_for('index'))
 
 @app.route('/complete/<int:id>', methods=['POST'])
@@ -139,6 +144,8 @@ def complete_delivery(id):
         conn.close()
     except Exception as e:
         print(f"Update Error: {e}")
+
+    flash("Delivery marked as completed.", "success")
     
     return redirect(url_for('index'))
 
