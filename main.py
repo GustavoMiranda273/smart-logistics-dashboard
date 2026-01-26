@@ -54,6 +54,11 @@ init_sql_table()
 
 @app.route('/')
 def index():
+    """
+    Main Dashboard Route.
+    Fetches delivery data from SQL and calculates real-time statistics
+    for the status cards.
+    """
     deliveries = []
     # Default counts (if database is empty)
     counts = {"total": 0, "transit": 0, "delivered": 0}
@@ -85,6 +90,11 @@ def index():
 
 @app.route('/create-delivery', methods=['POST'])
 def create_delivery():
+    """
+    Handles form submission.
+    1. Saves relational data to Neon PostgreSQL.
+    2. Saves audit logs to MongoDB Atlas.
+    """
     driver = request.form['driver']
     destination = request.form['destination']
     
