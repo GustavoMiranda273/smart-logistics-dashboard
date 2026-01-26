@@ -217,6 +217,12 @@ def api_get_deliveries():
         return jsonify(data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.errorhandler(404)
+def page_not_found(e):
+    """Custom 404 Page Handler."""
+    return render_template('404.html'), 404
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
